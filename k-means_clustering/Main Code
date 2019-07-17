@@ -1,0 +1,37 @@
+import sys
+!{sys.executable} -m pip install scikit-learn
+
+import matplotlib.pyplot as plt  
+%matplotlib inline
+import numpy as np  
+from sklearn.cluster import KMeans 
+from sklearn import datasets
+
+#loading data in
+my_data = np.loadtxt("3dV.TsujiiData.csv",skiprows=1,delimiter=",")
+kmeans = KMeans(n_clusters=7, random_state=0).fit(my_data)
+davidsgenders = np.loadtxt("davidsgenders.csv",skiprows=1,delimiter=",")
+captiveborn = np.loadtxt("captiveborn.csv", skiprows=1, delimiter=",")
+
+
+# Scaling the data to normalize
+model = KMeans(n_clusters=7).fit(my_data)
+genders = KMeans(n_clusters=2).fit(davidsgenders)
+captive = KMeans(n_clusters=7).fit(captiveborn)
+
+# Visualize it:
+plt.figure(figsize=(8, 5))
+plt.scatter(my_data[:,0], my_data[:,1], c="#cdc9c9", alpha = 0.5)
+#plt.scatter(davidsgenders[:,0],davidsgenders[:,1], c=genders.labels_.astype(float),)
+plt.scatter(captiveborn[:,0],captiveborn[:,1],c=captive.labels_.astype(float))
+plt.xlabel('Length')
+plt.ylabel('Height')
+
+#returns cluster centers
+kmeans.cluster_centers_
+
+
+#predictivemodel
+z = np.array([[1.595,0.9,0.237]])
+r = model.predict(z)
+r
